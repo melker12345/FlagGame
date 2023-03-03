@@ -3,29 +3,32 @@ import random
 import tkinter as tk
 from PIL import Image, ImageTk
 
-# Define the directory where the flag images are stored
-FLAG_DIR = r'C:\Users\Melker-Desktop\Desktop\Python\FlagGame\flag_img_folder'
+# Get the directory where your Python script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Join the script directory with the relative path of flag_img_folder
+FLAG_DIR = os.path.join(script_dir, "flag_img_folder")
 
 class FlagGameGUI:
     def __init__(self, master):
         self.master = master
         self.master.title("Flag Game")
-        self.master.geometry("500x500")
+        self.master.geometry("500x600")
+        self.master.configure(bg='#333')
         
         # Load all flag image filenames into a list
         self.flag_files = [f for f in os.listdir(FLAG_DIR) if f.endswith(".png")]
         
         # Create the UI elements
-        self.canvas = tk.Canvas(self.master, width=400, height=300, background='#333')
+        self.canvas = tk.Canvas(self.master, width=400, height=300, background='#333333')
         self.canvas.pack(pady=20)
         
         self.button_labels = []
         for i in range(4):
-            button = tk.Button(self.master, text="", command=lambda x=i: self.check_answer(x))
+            button = tk.Button(self.master, text="", command=lambda x=i: self.check_answer(x), bg="#333", fg="#fff")
             button.pack(fill="x", padx=20, pady=5)
             self.button_labels.append(button)
             
-        self.score_label = tk.Label(self.master, text="Score: 0")
+        self.score_label = tk.Label(self.master, text="Score: 0", bg="#333", fg="#fff")
         self.score_label.pack(pady=10)
         
         # Start the game
@@ -60,7 +63,7 @@ class FlagGameGUI:
         if self.button_labels[button_index].cget("text") == self.correct_country:
             self.score += 1
             self.score_label.configure(text=f"Score: {self.score}")
-            print("True")
+            print(f"Correct! +1")
         else:
             print("Wrong")
         self.next_question()
